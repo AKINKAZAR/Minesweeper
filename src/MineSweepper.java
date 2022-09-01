@@ -13,9 +13,9 @@ public class MineSweepper {
     }
 
     public boolean isGameOver(String[][] list, String empty) {
-        for (int i = 0; i < list.length; i++) {
-            for (int j = 0; j < list[i].length; j++) {
-                if (list[i][j].equals(empty)) {
+        for (String[] row : list) {
+            for (String col : row) {
+                if (col.equals(empty)) {
                     return false;
                 }
             }
@@ -25,9 +25,7 @@ public class MineSweepper {
 
     public void listDuplicate(String[][] list, String[][] duplicateList) {
         for (int i = 0; i < list.length; i++) {
-            for (int j = 0; j < list[i].length; j++) {
-                duplicateList[i][j] = list[i][j];
-            }
+            System.arraycopy(list[i], 0, duplicateList[i], 0, list[i].length);
         }
     }
 
@@ -43,7 +41,7 @@ public class MineSweepper {
         }
     }
 
-    public void putMine(String list[][], int listSize, String mine) {
+    public void putMine(String[][] list, int listSize, String mine) {
         Random rand = new Random();
         for (int i = 0; i < (listSize / 4); i++) {
             int row = rand.nextInt(rowNumber);
@@ -81,6 +79,7 @@ public class MineSweepper {
                 System.out.println("Oyunu Kazandınız !");
                 break;
             }
+
             do {
                 System.out.print("Satır Giriniz: ");
                 selectRow = scan.nextInt();
@@ -90,6 +89,7 @@ public class MineSweepper {
                     isRowInRange = false;
                 }
             } while (isRowInRange);
+
             do {
                 System.out.print("Sütun Giriniz: ");
                 selectCol = scan.nextInt();
@@ -110,19 +110,19 @@ public class MineSweepper {
                 int count = 0;
                 if (selectRow == 0) {
                     for (int i = 0; i < 2; i++) {
-                        if (selectCol == 0) {    // sol üst
+                        if (selectCol == 0) {
                             for (int j = 0; j < 2; j++) {
                                 if (list[i][j].equals(mine)) {
                                     count++;
                                 }
                             }
-                        } else if (selectCol == list.length - 1) {   //sağ üst
+                        } else if (selectCol == list.length - 1) {
                             for (int j = list[i].length - 1; j > list[i].length - 3; j--) {
                                 if (list[i][j].equals(mine)) {
                                     count++;
                                 }
                             }
-                        } else {  //Üst orta
+                        } else {
                             for (int j = selectCol - 1; j < selectCol + 2; j++) {
                                 if (list[i][j].equals(mine)) {
                                     count++;
@@ -132,19 +132,19 @@ public class MineSweepper {
                     }
                 } else if (selectRow == list.length - 1) {
                     for (int i = list.length - 1; i > list.length - 3; i--) {
-                        if (selectCol == 0) {                                         //sol alt
+                        if (selectCol == 0) {
                             for (int j = 0; j < 2; j++) {
                                 if (list[i][j].equals(mine)) {
                                     count++;
                                 }
                             }
-                        } else if (selectCol == list[i].length - 1) {                 //sağ alt
+                        } else if (selectCol == list[i].length - 1) {
                             for (int j = list[i].length - 1; j > list[i].length - 3; j--) {
                                 if (list[i][j].equals(mine)) {
                                     count++;
                                 }
                             }
-                        } else {                                                        // alt orta
+                        } else {
                             for (int j = selectCol - 1; j < selectCol + 2; j++) {
                                 if (list[i][j].equals(mine)) {
                                     count++;
@@ -154,7 +154,7 @@ public class MineSweepper {
                     }
                 }
 
-                if (selectRow != 0 && selectRow != list.length - 1) {    // sol orta
+                if (selectRow != 0 && selectRow != list.length - 1) {
                     for (int i = selectRow - 1; i < selectRow + 2; i++) {
                         if (selectCol == 0) {
                             for (int j = 0; j < 2; j++) {
@@ -185,7 +185,6 @@ public class MineSweepper {
                 duplicateList[selectRow][selectCol] = count + " ";
                 list[selectRow][selectCol] = count + " ";
             }
-
         }
     }
 }
